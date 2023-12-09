@@ -3,11 +3,27 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import './custom.scss';
+// import 'bootstrap/dist/css/bootstrap.css';
+import { MetaMaskProvider } from '@metamask/sdk-react';
+import { BrowserRouter } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+
+    <BrowserRouter>
+      <MetaMaskProvider debug={false} sdkOptions={{
+        checkInstallationImmediately: false,
+        dappMetadata: {
+          name: "Jalebi Frontend",
+          url: window.location.host,
+        }
+      }}>
+        <App />
+      </MetaMaskProvider>
+
+    </BrowserRouter>
   </React.StrictMode>
 );
 
