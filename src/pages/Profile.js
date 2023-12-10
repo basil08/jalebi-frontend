@@ -15,7 +15,6 @@ function Profile() {
 
     const getBalances1inch = async (chainId, walletAddress) => {
         try {
-            console.log(chainId, walletAddress);
             const resp = await fetch(config.BASE + '/getWalletBalances', {
                 method: "POST",
                 headers: {
@@ -24,13 +23,10 @@ function Profile() {
                 body: JSON.stringify({ chainId: chainId, walletAddress: walletAddress })
             });
 
-            console.log(walletAddress);
-
             if (resp.ok) {
                 const data = await resp.json();
-
-                console.log(data);
-                setBalance(data);
+                console.log(data.data);
+                setBalance(data.data);
             } else {
                 console.error(resp.error);
             }
@@ -68,21 +64,19 @@ function Profile() {
             </div>
 
             {/* <div className="divider"></div> */}
-            <div className="row">
-                <hr />
-                <div className="row"><p className="display-1">
-                    Balances</p></div>
+            <hr />
 
-
-
-                <div className="row">Address: {account}</div>
-
-
-            </div>
+            <button className="btn btn-outline-primary" onClick={() => getBalances1inch(chainId, account)}>Get Balances</button>
 
             {balances &&
-                <div>
-                    <PaginatedList items={balances} itemsPerPage={10} />
+                <div className="row">
+                    <div className="row"><p className="display-1">
+                        Balances</p></div>
+                    <div className="row">Address: {account}</div>
+                    <div className="p-3 mt-2 bg-white card border">
+                       {JSON.stringify(balances)}
+                    </div>
+
                 </div>
             }
 

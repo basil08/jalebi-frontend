@@ -11,7 +11,7 @@ const SwapPage = () => {
     const [account, setAccount] = useState();
     const [amount, setAmount] = useState();
     const [fromTokenAddress, setFromTokenAddress] = useState();
-    // const [toTokenAddress, setToTokenAddress] = useState();
+    const [quoteResponse, setQuoteResponse] = useState();
 
     const { sdk, connected, connecting, provider, chainId } = useSDK();
 
@@ -80,6 +80,7 @@ const SwapPage = () => {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data);
+                setQuoteResponse(JSON.stringify(data));
             } else {
                 console.error(await response.json());
             }
@@ -211,6 +212,8 @@ const SwapPage = () => {
 
                         <button className="btn btn-primary">Get Quote</button>
                     </form>
+
+                    <div className="card border bg-white mt-2 p-3">{quoteResponse}</div>
 
                 </div>
             </div>

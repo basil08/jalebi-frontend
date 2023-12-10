@@ -3,13 +3,11 @@ import { useSDK } from '@metamask/sdk-react';
 import PaginatedList from '../components/PaginatedList';
 import config from '../config';
 import Navbar from '../components/Navbar';
-import { getTokensListUtil } from '../utils/utils';
 
 function Home() {
 
 
     const [account, setAccount] = useState();
-    const [error, setError] = useState();
     const { sdk, connected, connecting, provider, chainId } = useSDK();
 
     // token data
@@ -35,25 +33,61 @@ function Home() {
 
     const getTokenList1inch = async () => {
         setGettingTokenList(true);
-        const mdata = await getTokensListUtil();
-        console.log("MDATA", mdata);
-        setGettingTokenList(false);
-        setGotTokenList(true);
-        setTokensList(mdata);
+        try {
+            const res = await fetch(config.BASE + "/getTokenList", {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+
+                setGettingTokenList(false);
+                setGotTokenList(true);
+
+                
+                const mdata = data.data.list.map((elem) => {
+                    return {
+                        name: elem, 
+                        symbol: elem.split(" ")[0],
+                        tokenAddress: data.data.address[data.data.list.indexOf(elem)]
+                    }
+                })
+                setTokensList(mdata);
+            } else {
+                console.error(res);
+                setTokensList([]);
+                // return { status: 1, error: await res.json() };
+            }
+        } catch (err) {
+            console.error(err);
+            return { status: 1, error: err };
+        }
+
+        // if (mdata.status == 0) {
+        //     console.log("MDATA", mdata);
+        //     setGettingTokenList(false);
+        //     setGotTokenList(true);
+        //     setTokensList(mdata);
+        // } else {
+        //     console.log("Cannot fetch TOKEN LIST");
+        //     console.log(mdata);
+        // }
     }
 
     // useEffects 
 
-    // const disconnectWallet = async () => {
-    //     await window.ethereum.request({
-    //         "method": "wallet_revokePermissions",
-    //         "params": [
-    //             {
-    //                 "eth_accounts": {}
-    //             }
-    //         ]
-    //     });
-    // }
+    const disconnectWallet = async () => {
+        await window.ethereum.request({
+            "method": "wallet_revokePermissions",
+            "params": [
+                {
+                    "eth_accounts": {}
+                }
+            ]
+        });
+    }
 
     useEffect(() => {
         getTokenList1inch();
@@ -76,7 +110,7 @@ function Home() {
                                 <div className='d-flex pl-2 pr-2 pb-3'>
                                     {chainId && `Connected chain: ${chainId}`}
                                     {account && `Connected account: ${account}`}
-                                    {/* <button className='btn btn-outline-primary' onClick={() => disconnectWallet()}>Disconnect</button> */}
+                                    <button className='btn btn-outline-primary' onClick={() => disconnectWallet()}>Disconnect</button>
                                 </div>
                             </>
                         )}
@@ -95,9 +129,13 @@ function Home() {
             //   <div className='alert alert-error'>{error}</div>
             )} */}
 
-                    {gotTokenList && tokensList && (
+                    {tokensList && tokensList.length > 0 && (
                         <PaginatedList items={tokensList} itemsPerPage={10} />
                     )}
+                </div>
+
+                <div className='row'>
+                    <p>{gotTokenList && tokensList && tokensList.length <= 0 && "Cannot fetch token list"}</p>
                 </div>
             </div>
         </div>
