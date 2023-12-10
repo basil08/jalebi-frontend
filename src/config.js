@@ -1,5 +1,5 @@
-// const ENDPOINT = "https://jalebi-backend.vercel.app/api";
-const ENDPOINT = undefined;
+const ENDPOINT = "https://jalebi-backend.vercel.app";
+// const ENDPOINT = undefined;
 
 const config = {
     BASE: ENDPOINT ? ENDPOINT : 'http://localhost:8080',
