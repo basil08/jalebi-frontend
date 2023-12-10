@@ -1,6 +1,7 @@
+// const ENDPOINT = "https://jalebi-backend.vercel.app/api";
+
 const config = {
-    BASE: 'http://localhost:8080',
-    
+    BASE: ENDPOINT ? ENDPOINT : 'http://localhost:8080',
 } 
  
 export default config;
