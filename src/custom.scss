@@ -1,8 +1,28 @@
 // Override default variables before the import
-$body-bg: #1c1c1c;
-$body-color: #eee;
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Roboto&display=swap');
 
+$body-bg: rgb(249, 212, 160);
 
+$body-color: rgb(60, 28, 5);
+
+$primary: rgb(60, 28, 5);
+
+$theme-colors: (
+    "primary": $primary,
+    //   "secondary":  $secondary,
+    //   "success":    $success,
+    //   "info":       $info,
+    //   "warning":    $warning,
+    //   "danger":     $danger,
+    //   "light":      $light,
+    //   "dark":       $dark
+);
+
+$font-family-sans-serif: "Roboto", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
+$font-family-monospace:  "Roboto Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+$font-family-base:       $font-family-sans-serif !default;
+
+$heading-font-family: "Bungee";
 // $primary
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';

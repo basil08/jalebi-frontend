@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './custom.scss';
-// import 'bootstrap/dist/css/bootstrap.css';
 import { MetaMaskProvider } from '@metamask/sdk-react';
 import { BrowserRouter } from 'react-router-dom';
 
